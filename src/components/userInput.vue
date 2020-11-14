@@ -1,7 +1,8 @@
 <template>
   <div>
     <div class="input-container">
-      <input type="text" v-model="newTask" @keydown.enter="addNewTask">
+      <input type="text" v-model="newName" @keydown.enter="addNewTask" placeholder="John Doe" class="name-input">
+      <input type="text" v-model="newTask" @keydown.enter="addNewTask" placeholder="Excercise">
     </div>
     <div class="input-info">
       <div>
@@ -14,12 +15,18 @@
     <hr>
     <div class="todo-container" v-for="(todo, index) in todos" :key="index">
       <div class="todo-left">
-       {{todo.count + ":"}} {{todo.task}}
+        <div >
+          <h4>{{todo.name}}</h4>
+        </div>
+        <div class="task-container">
+          <!-- {{todo.count + ":"}} --> {{todo.task}}
+        </div>
       </div>
       <div class="todo-right" @click="deleteTask(index)">
         <p class="task-delete">&times;</p>
       </div>
     </div>
+    <hr>
   </div>
 </template>
 
@@ -27,6 +34,7 @@
 export default {
   data() {
     return {
+      newName: '',
       newTask: '',
       taskId: 0,
 
@@ -38,10 +46,14 @@ export default {
       if(this.newTask.trim().length == 0) {
         return
       }
+      if(this.newName.trim().length == 0) {
+        this.newName = "not specified"
+      }
       this.todos.push(
         {
           id: this.taskId,
           count: 1 + this.taskId,
+          name: this.newName,
           task: this.newTask,
           completion: false
         }
@@ -67,9 +79,17 @@ export default {
   box-sizing: border-box;
   margin: 0 auto;
 
+  .name-input {
+    width: 30%;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+
   input {
     width: 100%;
     height: 5vh;
+    border: none;
+    border-bottom: 1px solid black;
 
     &:focus {
       outline: none;
@@ -100,6 +120,11 @@ export default {
   .todo-left {
     margin-right: auto;
     margin: auto 0;
+
+    h4, .task-container {
+      text-align: left;
+      margin-bottom: 5px;
+    };
   }
   .todo-right {
     margin-left: auto;
@@ -116,7 +141,7 @@ export default {
 </style>
 
 // TODOS
-// create username input that you only have to input once
+// create username input that you only have to input once === true
 // input field for tasks
 // button for more submit options
 // fix task id deletion
