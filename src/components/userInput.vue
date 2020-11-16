@@ -14,16 +14,21 @@
     </div>
     <hr>
     <div class="todo-container" v-for="(todo, index) in todos" :key="index">
-      <div class="todo-left">
+      <div class="todo-left" :class="{ completed : todo.completed }">
         <div >
           <h4>{{todo.name}}</h4>
         </div>
         <div class="task-container">
-          <!-- {{todo.count + ":"}} --> {{todo.task}}
+          <!-- {{todo.count + ":"}} --> <p class="task-font">{{todo.task}}</p>
         </div>
       </div>
-      <div class="todo-right" @click="deleteTask(index)">
-        <p class="task-delete">&times;</p>
+      <div class="todo-right">
+        <div @click="deleteTask(index)">
+          <p class="task-delete">&times;</p>
+        </div>
+        <div>
+          <input type="checkbox" v-model="todo.completed">
+        </div>
       </div>
     </div>
     <hr>
@@ -55,7 +60,7 @@ export default {
           count: 1 + this.taskId,
           name: this.newName,
           task: this.newTask,
-          completion: false
+          completed: false,
         }
       )
       this.newTask = '',
@@ -95,6 +100,13 @@ export default {
       outline: none;
     }
   }
+}
+h4 {
+  font-size: 12px;
+}
+.task-font {
+  font-size: 20px;
+  margin: 0;
 }
 .input-info {
   display: flex;
@@ -136,6 +148,11 @@ export default {
         color: red;
       }
     }
+  }
+  .completed {
+    text-decoration: line-through;
+    color: grey;
+    opacity: 0.2;
   }
 }
 </style>
